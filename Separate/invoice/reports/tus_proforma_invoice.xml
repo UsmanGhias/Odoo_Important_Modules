@@ -1,0 +1,588 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_tus_proforma_report">
+        <t t-call="tus_tamimi_invoice.header_layout_account_invoice_report">
+            <t t-set="lang"
+               t-value="o.invoice_user_id.sudo().lang if o.move_type in ('in_invoice', 'in_refund') else o.partner_id.lang"/>
+            <t t-set="address_id"
+               t-value="o.partner_id.child_ids.filtered(lambda x: x.type == 'delivery') if o.partner_id and o.partner_id.child_ids else False"/>
+            <div class="page" t-att-lang="lang"
+                 t-attf-style="background-image: url('tus_tamimi_invoice/static/water_mark.png');background-size:225mm 238mm;height:700px">
+                <t>
+                    <style>
+                        @font-face {
+                        font-family: 'Scheherazade'; src:
+                        url('/tus_tamimi_invoice/static/fonts/ScheherazadeNew-Regular.ttf');
+                        }
+                        table td {
+                        margin: 0 20px 0 20px !important;
+                        }
+                    </style>
+                    <div>
+                        <div style="width:100%;float:left;font-weight: bold;font-size:13px;padding-top:55px;font-family: Scheherazade !important;">
+                            <table style="width:40%;float:left;">
+
+                                <tr>
+                                    <td colspan="3"
+                                        style="font-size:18px;font-weight:bold;border-right:hidden;border-left:hidden;border-top:hidden;">
+                                        <span>Customer Details</span>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="3" style="padding:7px;font-size:14px;">
+                                        <t t-esc="o.partner_id.name"/>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td style="padding:5px;border-bottom:hidden;border-right:hidden;font-size:14px;">
+                                        Building No
+                                    </td>
+                                    <td style="padding:5px;border-bottom:hidden;font-size:14px;font-weight:initial;text-align:center;">
+                                        <t t-if="o.partner_id and o.partner_id.l10n_sa_edi_building_number">
+                                            <t t-esc="o.partner_id.l10n_sa_edi_building_number"/>
+                                        </t>
+                                    </td>
+
+                                </tr>
+
+                                <tr>
+                                    <td style="padding:5px;border-bottom:hidden;border-right:hidden;font-size:14px;">
+                                        Street Name
+                                    </td>
+                                    <td style="padding:5px;border-bottom:hidden;font-size:14px;font-weight:initial;text-align:center;">
+                                        <t t-if="o.partner_id and o.partner_id.street">
+                                            <t t-esc="o.partner_id.street"/>
+                                        </t>
+                                    </td>
+
+                                </tr>
+
+                                <tr>
+                                    <td style="padding:5px;border-bottom:hidden;border-right:hidden;font-size:14px;">
+                                        District
+                                    </td>
+                                    <td style="padding:5px;border-bottom:hidden;font-size:14px;font-weight:initial;text-align:center;">
+                                        <t t-if="o.partner_id and o.partner_id.street2">
+                                            <t t-esc="o.partner_id.street2"/>
+                                        </t>
+                                    </td>
+
+                                </tr>
+
+                                <tr>
+                                    <td style="padding:5px;border-bottom:hidden;border-right:hidden;font-size:14px;">
+                                        Province/State
+                                    </td>
+                                    <td style="padding:5px;border-bottom:hidden;font-size:14px;font-weight:initial;text-align:center;">
+                                        <t t-if="o.partner_id and o.partner_id.state_id and o.partner_id.state_id.name">
+                                            <t t-esc="o.partner_id.state_id.name"/>
+                                        </t>
+                                    </td>
+
+                                </tr>
+
+                                <tr>
+                                    <td style="padding:5px;border-bottom:hidden;border-right:hidden;font-size:14px;">
+                                        Country
+                                    </td>
+                                    <td style="padding:5px;border-bottom:hidden;font-size:14px;font-weight:initial;text-align:center;">
+                                        <t t-if="o.partner_id and o.partner_id.country_id and o.partner_id.country_id.name">
+                                            <t t-esc="o.partner_id.country_id.name"/>
+                                        </t>
+                                    </td>
+
+                                </tr>
+
+                                <tr>
+                                    <td style="padding:5px;border-bottom:hidden;border-right:hidden;font-size:14px;">
+                                        City
+                                    </td>
+                                    <td style="padding:5px;border-bottom:hidden;font-size:14px;font-weight:initial;text-align:center;">
+                                        <t t-if="o.partner_id and o.partner_id.city">
+                                            <t t-esc="o.partner_id.city"/>
+                                        </t>
+                                    </td>
+
+                                </tr>
+
+                                <tr>
+                                    <td style="padding:5px;border-bottom:hidden;border-right:hidden;font-size:14px;">
+                                        P.O. Box
+                                    </td>
+                                    <td style="padding:5px;border-bottom:hidden;font-size:14px;font-weight:initial;text-align:center;">
+                                        <t t-if="o.partner_id and o.partner_id.street2">
+                                            <t t-esc="o.partner_id.street2"/>
+                                        </t>
+                                    </td>
+
+                                </tr>
+
+                                <tr>
+                                    <td style="padding:5px;border-right:hidden;font-size:14px;">Additional No.</td>
+                                    <td style="padding:5px;font-size:14px;font-weight:initial;text-align:center;">
+                                        <t t-if="o.partner_id and o.partner_id.additional_number">
+                                            <t t-esc="o.partner_id.additional_number"/>
+                                        </t>
+                                    </td>
+
+                                </tr>
+                            </table>
+                            <table style="width:20%;float:left;text-align:center;">
+                                <tr>
+                                    <td style="border:hidden;padding-top:25px;">
+                                        <h3>Proforma Invoice</h3>
+                                        <br/>
+                                        <h3>الفاتورة الأولية</h3>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table style="width:40%;float:left;">
+                                <tr>
+                                    <td colspan="3"
+                                        style="text-align:right;font-size:18px;font-weight:bold;border-right:hidden;border-left:hidden;border-top:hidden;">
+                                        <span>تفاصيل العميل</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" style="padding:7px;font-size:14px;">
+                                        <t t-esc="address_id.name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:5px;border-bottom:hidden;font-size:14px;font-weight:initial;text-align:center;">
+                                        <t t-if="address_id and address_id.l10n_sa_edi_building_number">
+                                            <t t-esc="address_id.l10n_sa_edi_building_number"/>
+                                        </t>
+                                    </td>
+                                    <td style="padding:5px;border-bottom:hidden;border-left:hidden;font-size:14px;text-align:right;">
+                                        رقم المبنى
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td style="padding:5px;border-bottom:hidden;font-size:14px;font-weight:initial;text-align:center;">
+                                        <t t-if="address_id and address_id.street">
+                                            <t t-esc="address_id.street"/>
+                                        </t>
+                                    </td>
+                                    <td style="padding:5px;border-bottom:hidden;border-left:hidden;font-size:14px;text-align:right;">
+                                        اسم الشارع
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td style="padding:5px;border-bottom:hidden;font-size:14px;font-weight:initial;text-align:center;">
+                                        <t t-if="address_id and address_id.street2">
+                                            <t t-esc="address_id.street2"/>
+                                        </t>
+                                    </td>
+                                    <td style="padding:5px;border-bottom:hidden;border-left:hidden;font-size:14px;text-align:right;">
+                                        الحي
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td style="padding:5px;border-bottom:hidden;font-size:14px;font-weight:initial;text-align:center;">
+                                        <t t-if="address_id and address_id.state_id and address_id.state_id.name">
+                                            <t t-esc="address_id.state_id.name"/>
+                                        </t>
+                                    </td>
+                                    <td style="padding:5px;border-bottom:hidden;border-left:hidden;font-size:14px;text-align:right;">
+                                        المنطقة
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td style="padding:5px;border-bottom:hidden;font-size:14px;font-weight:initial;text-align:center;">
+                                        <t t-if="address_id and address_id.country_id and address_id.country_id.name">
+                                            <t t-esc="address_id.country_id.name"/>
+                                        </t>
+                                    </td>
+                                    <td style="padding:5px;border-bottom:hidden;border-left:hidden;font-size:14px;text-align:right;">
+                                        البلد
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td style="padding:5px;border-bottom:hidden;font-size:14px;font-weight:initial;text-align:center;">
+                                        <t t-if="address_id and address_id.city">
+                                            <t t-esc="address_id.city"/>
+                                        </t>
+                                    </td>
+                                    <td style="padding:5px;border-bottom:hidden;border-left:hidden;font-size:14px;text-align:right;">
+                                        المدينة
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td style="padding:5px;border-bottom:hidden;font-size:14px;font-weight:initial;text-align:center;">
+                                        <t t-if="address_id and address_id.street2">
+                                            <t t-esc="address_id.street2"/>
+                                        </t>
+                                    </td>
+                                    <td style="padding:5px;border-bottom:hidden;border-left:hidden;font-size:14px;text-align:right;">
+                                        صندوق البريد
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td style="padding:5px;font-size:14px;font-weight:initial;text-align:center;">
+                                        <t t-if="address_id and address_id.arabic_additional_number">
+                                            <t t-esc="address_id.arabic_additional_number"/>
+                                        </t>
+                                    </td>
+                                    <td style="padding:5px;border-left:hidden;font-size:14px;text-align:right;">
+                                        الرقم الاضافي
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div style="width:100%;float:left;font-size:13px;padding-top:10px;">
+                            <table style="width:100%;float:left;">
+                                <tr>
+                                    <td style="padding:4px;">
+                                        <span>Invoice No. / رقم الفاتورة.</span>
+                                        <br/>
+                                        <t t-if="o.name">
+                                            <t t-esc="o.name"/>
+                                        </t>
+                                    </td>
+                                    <td style="padding:4px;">
+                                        <span>Invoice Date / تاريخ الفاتورة</span>
+                                        <br/>
+                                        <t t-if="o.invoice_date">
+                                            <t t-esc="o.invoice_date"/>
+                                        </t>
+                                    </td>
+                                    <td style="padding:4px;">
+                                        <span>Service Period / مدة الخدمة</span>
+                                        <br/>
+                                        <span>
+                                            <t t-esc="o.service_period"/>
+                                        </span>
+                                    </td>
+                                    <td style="padding:4px;">
+                                        <span>Credit Days / مدة الائتمان</span>
+                                        <br/>
+                                        <t t-if="o.invoice_payment_term_id">
+                                            <t t-esc="o.invoice_payment_term_id.name or ' '"/>
+                                        </t>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:4px;">
+                                        <span>PO No. / رقم الشراء.</span>
+                                        <br/>
+                                        <t t-if="o.po_number">
+                                            <t t-esc="o.po_number"/>
+                                        </t>
+                                    </td>
+                                    <td style="padding:4px;">
+                                        <span>Dated / تاريخ</span>
+                                        <br/>
+                                        <t t-if="o.po_date">
+                                            <t t-esc="o.po_date"/>
+                                        </t>
+                                    </td>
+                                    <td style="padding:4px;">
+                                        <span>Contract No / رقم العقد</span>
+                                        <br/>
+                                        <t t-if="o and o.contract_no">
+                                            <t t-esc="o.contract_no"/>
+                                        </t>
+                                    </td>
+                                    <td style="padding:4px;">
+                                        <span>Client Reference / مرجع العميل</span>
+                                        <br/>
+                                        <t t-if="o and o.client_reference">
+                                            <t t-esc="o.client_reference"/>
+                                        </t>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:4px;">
+                                        <span>Location / موقع</span>
+                                        <br/>
+                                        <t t-if="o.incoterm_location">
+                                            <t t-esc="o.incoterm_location"/>
+                                        </t>
+                                    </td>
+                                    <td style="padding:4px;">
+                                        <span>SES/RN / رقم اعتماد الخدمة</span>
+                                        <br/>
+                                        <t t-if="o and o.ses_no">
+                                            <t t-esc="o.ses_no"/>
+                                        </t>
+                                    </td>
+                                    <td style="padding:4px;">
+                                        <span>Currency / العملة</span>
+                                        <br/>
+                                        <t t-if="o.currency_id">
+                                            <t t-esc="o.currency_id.name"/>
+                                        </t>
+                                    </td>
+                                    <td style="padding:4px;">
+                                        <span>Affiliates / فروع تابعة</span>
+                                        <br/>
+                                        <t t-if="o.affiliates">
+                                            <t t-esc="o.affiliates"/>
+                                        </t>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:4px;">
+                                        <span>CR No. / السجل التجاري</span>
+                                        <br/>
+                                        <t t-if="o.company_id and o.company_id.company_registry">
+                                            <t t-esc="o.partner_id.cr_number"/>
+                                        </t>
+                                    </td>
+                                    <td style="padding:4px;">
+                                        <span>Vendor No / رقم المورد</span>
+                                        <br/>
+                                        <t t-if="o.partner_id and o.partner_id.vendor_no">
+                                            <t t-esc="o.partner_id.vendor_no"/>
+                                        </t>
+                                    </td>
+                                    <td style="padding:4px;">
+                                        <span>VAT# / الرقم الضريبي</span>
+                                        <br/>
+                                        <t t-if="o.company_id and o.company_id.vat">
+                                            <t t-esc="o.company_id.vat"/>
+                                        </t>
+                                    </td>
+                                    <td style="padding:4px;">
+                                        <span>Business Partner VAT# / الرقم الضريبي للعميل</span>
+                                        <br/>
+                                        <t t-if="o.partner_id and o.partner_id.vat">
+                                            <t t-esc="o.partner_id.vat"/>
+                                        </t>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <br/>
+                        <t t-set="count" t-value="0"/>
+                        <table style="width:100%; border-collapse:separate;"
+                               cellpadding="0 !important;"
+                               cellspacing="0 !important;">
+                            <tr>
+                                <td style="width:80%;vertical-align: middle;font-family: Scheherazade !important;text-align:left;border:1px solid black;padding:5px;background-color:#DCDCDC !important;">
+                                    Description / الوصف
+                                </td>
+                                <th style="width:20%;vertical-align: middle;font-family: Scheherazade !important; text-align:right;border:1px solid black;padding:5px;background-color:#DCDCDC !important;">
+                                    Amount / المبلغ
+                                </th>
+                            </tr>
+                            <t t-set="total_discount" t-value="0"/>
+                            <tr t-foreach="o.invoice_line_ids" t-as="l">
+                                <t t-set="count" t-value="count + 1"/>
+                                <t t-set="tax_info" t-value="l.get_tax_info(l.tax_ids, l.price_subtotal)"/>
+                                <t t-set="discount_amount"
+                                   t-value="l.get_discount_amount(l.quantity, l.price_unit, l.discount)"/>
+                                <t t-set="total_discount" t-value="total_discount + discount_amount"/>
+                                <td style="vertical-align: middle;font-family: Scheherazade !important;text-align:left;border:1px solid black;padding:5px;border-right:hidden;">
+                                    <t t-esc="l.name"/>
+                                    <br/>
+                                </td>
+                                <td style="vertical-align: middle;font-family: Scheherazade !important;text-align:right;border:1px solid black;padding:5px;">
+                                    <t t-esc="l.price_subtotal"
+                                       t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                </td>
+                            </tr>
+                        </table>
+                        <br/>
+                        <table style="width:100%;float:left;vertical-align: middle;font-family: Scheherazade !important;">
+                            <tr>
+                                <td width="80%" style="font-size:14px;padding:4px;border-bottom:hidden;">
+                                    <span>
+                                        Please state with your payment / يرجى ذكر الدفع الخاص بك
+                                    </span>
+                                </td>
+                                <td width="15%"
+                                    style="font-size:14px;padding:4px;border-bottom:hidden;border-right:hidden;">
+                                    <span>
+                                        Subtotal/المجموع الفرعي
+                                    </span>
+                                </td>
+                                <td width="5%"
+                                    style="font-size:14px;padding:4px;border-bottom:hidden;text-align:right;">
+                                    <span>
+                                        <t t-esc="o.amount_untaxed"
+                                           t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="70%" style="font-size:14px;padding:4px;border-bottom:hidden;">
+                                    <span>
+                                        Our Bank Account / حسابنا البنكي
+                                    </span>
+                                </td>
+                                <td width="20%"
+                                    style="font-size:14px;padding:4px;border-bottom:hidden;border-right:hidden;">
+                                    <span>
+                                        Order Dis./ الخصم
+                                    </span>
+                                </td>
+                                <td width="10%"
+                                    style="font-size:14px;padding:4px;border-bottom:hidden;text-align:right;">
+                                    <span>
+                                        <t t-esc="sum(o.invoice_line_ids.mapped('discount'))"
+                                           t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="70%" style="font-size:14px;padding:4px;border-bottom:hidden;">
+                                    <t t-set="banks_data" t-value=""/>
+                                    <t t-if="o.partner_bank_id">
+                                        <t t-set="banks_data"
+                                           t-value="o.partner_bank_id"/>
+                                    </t>
+                                    <t t-if="banks_data">
+                                        <span t-field="banks_data.acc_holder_name"/>
+                                    </t>
+                                </td>
+                                <td width="20%"
+                                    style="font-size:14px;padding:4px;border-bottom:hidden;border-right:hidden;">
+                                    Vat tot/إجمالي ضريبة القيمة المضافة
+                                </td>
+                                <td width="10%"
+                                    style="font-size:14px;padding:4px;border-bottom:hidden;text-align:right;">
+                                    <t t-if="l.tax_ids and l.tax_ids.filtered(lambda x:x.amount &lt; 0)">
+                                        <t t-esc="o.amount_tax - ((o.amount_untaxed)/(l.tax_ids.filtered(lambda x:x.amount &lt; 0).amount))"
+                                           t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                    </t>
+                                    <t t-else="">
+                                        <t t-esc="o.amount_tax"
+                                           t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                    </t>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="70%"
+                                    style="font-size:14px;padding:4px;vertical-align: middle;font-family: Scheherazade !important;">
+                                    <span>
+                                        <span t-field="banks_data.bank_id"/>
+                                        &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;IBAN#
+                                        <t t-esc="banks_data.custom_iban"/>
+                                    </span>
+                                </td>
+                                <td width="20%" style="font-size:14px;padding:4px;border-right:hidden;">
+                                    Adv. Inc. VAT
+                                    <t t-if="l.tax_ids and l.tax_ids.filtered(lambda x:x.amount &lt; 0)">
+                                        <br/>
+                                        <br/>
+                                        Retention 10%
+                                        <br/>
+                                        محجوز (۱۰%)
+                                    </t>
+                                </td>
+                                <td width="10%" style="font-size:14px;padding:4px;text-align:right;">
+                                    0.00
+                                    <t t-if="l.tax_ids and l.tax_ids.filtered(lambda x:x.amount &lt; 0)">
+                                        <br/>
+                                        <br/>
+                                        <t t-esc="(o.amount_untaxed)/(l.tax_ids.filtered(lambda x:x.amount &lt; 0).amount)"
+                                           t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                    </t>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="70%"
+                                    style="font-size:13px;padding:4px;font-family: Scheherazade !important;"
+                                    colspan="1">
+                                    <span>
+                                        Saudi Arabian Riyal (s)
+                                    </span>
+                                </td>
+                                <td colspan="2"></td>
+                            </tr>
+                            <tr>
+                                <td width="70%"
+                                    style="font-size:14px;padding:4px;border-bottom:hidden;vertical-align: middle;font-family: Scheherazade !important;">
+                                    <span>
+                                        <t t-esc="o._convert_amount_to_text()"/>
+                                    </span>
+                                </td>
+                                <td width="20%"
+                                    style="font-size:14px;padding:4px;border-right:hidden;border-bottom:hidden;vertical-align: middle;font-family: Scheherazade !important;">
+                                    Total Amount/المبلغ الإجمالي
+                                </td>
+                                <td width="10%"
+                                    style="font-size:14px;padding:4px;text-align:right;border-bottom:hidden;vertical-align: middle;font-family: Scheherazade !important;">
+                                    <t t-esc="o.amount_total"
+                                       t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="70%"
+                                    style="font-size:14px;padding:4px;text-align:right;vertical-align: middle;font-family: Scheherazade !important;">
+                                    <span>
+                                        <t t-esc="o._convert_amount_to_text_arabic()"/>
+                                    </span>
+                                </td>
+                                <td width="20%"
+                                    style="font-size:12px;padding:4px;border-right:hidden;vertical-align: middle;font-family: Scheherazade !important;">
+                                </td>
+                                <td style="font-size:12px;padding:4px;">
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="row" style="width:100%;float:left;font-size:11px;padding-top:5px;">
+                            **ATTENTION**
+                            <br/>
+                            <span>
+                                Cybercrime and fraud is on the increase. Requests to change bank account details should
+                                have an
+                                authenticated company stamp and chambered letter communicated through official channels
+                                when
+                                changes to our details may occur. If you receive an spam emails or other electronic
+                                communication purporting to be from this Tamimi Rentals changing details of any account
+                                of ours to
+                                which
+                                monies to be sent. please DO NOT act on the communication but contact us immediately at
+                                the
+                                telephone number or email address.
+                            </span>
+                        </div>
+                        <table style="width:100%;float:left;">
+                            <tr>
+                                <td width="33.33%" style="font-size:12px;padding:4px;border:hidden;padding-top:15px;">
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    Manager's Signature:------------------------
+                                </td>
+                                <td width="33.33%"
+                                    style="font-size:12px;padding:4px;border:hidden;text-align:center;padding-top:25px;">
+                                </td>
+                                <td width="33.33%" style="font-size:12px;padding:4px;border:hidden;">
+                                    Received By:------------------------
+                                    <br/>
+                                    Date:
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    Name:------------------------
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    Signature:------------------------
+                                    <br/>
+                                    Date:
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                </t>
+            </div>
+        </t>
+        <t t-call="tus_tamimi_invoice.footer_layout_account_invoice_report"/>
+    </template>
+</odoo>

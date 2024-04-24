@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="base_document_layout_view_extended" model="ir.ui.view">
+            <field name="name">base.document.layout.form.entended</field>
+            <field name="model">base.document.layout</field>
+            <field name="inherit_id" ref="web.view_base_document_layout"/>
+            <field name="arch" type="xml">
+                <field name="paperformat_id" position="after">
+                    <field name="custom_header" widget="image"/>
+                    <field name="custom_footer" widget="image"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>
