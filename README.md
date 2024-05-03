@@ -1,2 +1,3 @@
-# Odoo_Important_Module
-Important Odoo Module to be utilized;
+# Usman Ghias
+This odoo application is add vendor type in contact application. Create vendor type under contact menu. Select and view vendor type in contact form, product under purchase tab.
+# vendor_type
